@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архитектура – Локомотивы (КТЖ)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col h-full overflow-y-auto">
+        <div class="p-6 border-b border-gray-200 bg-gray-900 text-white">
+            <h1 class="text-xl font-bold">Система Локомотивов</h1>
+            <p class="text-sm text-gray-300 mt-1">Документация v1.0 (КТЖ)</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 text-sm font-medium">
+            <div class="pt-2 pb-2">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Руководства (Docs)</p>
+                <a href="setup.html" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">Как развернуть проект</a>
+                <a href="architecture.html" class="block px-2 py-1.5 bg-blue-50 text-blue-700 rounded-md transition-colors">Как всё устроено</a>
+            </div>
+            <div class="pt-2 pb-2 border-t border-gray-200 mt-2">
+                <a href="index.html" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">&larr; Вернуться к API</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto w-full h-full p-8 md:p-12 bg-white" style="scrollbar-gutter: stable">
+        <div class="max-w-4xl mx-auto">
+            
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Как всё устроено (Архитектура)</h2>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                Система мониторинга локомотивов спроектирована с использованием современных технологий и условно делится на <strong>Backend</strong> (работа с БД, API, бизнес-логика) и <strong>Frontend</strong> (визуализация, карты, SPA).
+            </p>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Технологический Стек</h3>
+            <ul class="list-disc pl-5 mb-8 text-gray-700 space-y-2">
+                <li><strong>Laravel 11 / PHP 8.3+:</strong> Ядро платформы. Обеспечивает роутинг (API + Web), ORM (Eloquent), аутентификацию (Fortify) и очереди.</li>
+                <li><strong>Inertia.js + Svelte 5:</strong> Позволяет нам писать современный Single-Page Application (SPA) интерфейс без сложной конфигурации клиентского роутинга. Контроллеры Laravel отдают готовые Svelte-компоненты.</li>
+                <li><strong>Tailwind CSS 3/4:</strong> Вспомогательный CSS фреймворк для быстрого и красивого дизайна утилитными классами.</li>
+                <li><strong>PostgreSQL:</strong> Реляционная БД. Идеально справляется с агрегацией таймсерий (данных телеметрии). Оптимизирована с помощью индексов и date_bin агрегаций.</li>
+                <li><strong>Laravel Reverb (или Pusher):</strong> Движок WebSocket для отстреливания событий в реальном времени (например, изменение статуса локомотива).</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Архитектура Базы Данных</h3>
+            <p class="text-sm text-gray-600 mb-4">
+                Ключевые сущности системы:
+            </p>
+            <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg mb-8">
+                <dl class="space-y-4 text-sm text-gray-700">
+                    <div>
+                        <dt class="font-bold text-blue-600 code text-base">users</dt>
+                        <dd>Операторы системы. Управляют доступом и конфигурациями.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-bold text-blue-600 code text-base">locomotives</dt>
+                        <dd>Реестр самих локомотивов: <code>id</code> (номер), <code>model</code> (серия), текущее состояние и последние координаты.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-bold text-blue-600 code text-base">telemetry_histories</dt>
+                        <dd>Таблица, куда записывается гигантский поток показаний сенсоров: скорость (speed), температура (temperature), давление, уровень топлива. Имеет индексы по timestamp для быстрых фильтров аналитики.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-bold text-blue-600 code text-base">websocket_endpoints</dt>
+                        <dd>Адреса, по которым распределяются потоки данных локомотивов.</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Жизненный цикл Телеметрии</h3>
+            <ol class="list-decimal pl-5 mb-8 text-gray-700 space-y-3">
+                <li><strong>Датчики локомотива</strong> каждые N секунд генерируют пакет с данными (gps координаты, скорость, нагрев двигателей).</li>
+                <li><strong>Приемник / API Сервер</strong> получает этот запрос, валидирует (через API контроллеры в <i>Laravel</i>) и сохраняет в БД (таблице <code>telemetry_histories</code>).</li>
+                <li>Если данные выходят за пределы нормы, срабатывает система <strong>Anomalies</strong> (запись флага <code>is_anomaly=true</code>).</li>
+                <li>Сервер через <strong>WebSocket (Broadcast)</strong> мгновенно уведомляет всех подключенных диспетчеров (на клиентской стороне обновляется карта и счетчики без перезагрузки страницы).</li>
+                <li>Диспетчер может открыть страницу <strong>Analytics</strong>, где данные извлекаются, группируются через функцию <code>date_bin</code> и отдаются в виде красивых графиков в интерфейсе Svelte.</li>
+            </ol>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r-md">
+                <p class="text-sm text-blue-800">
+                    <strong>Модуль Wayfinder:</strong> Обратите внимание, что маршрутизация на фронтенде работает "из коробки" благодаря плагину <code>wayfinder()</code>, который позволяет вызывать маршруты Laravel напрямую в JS (через `wayfinder.route(...)`).
+                </p>
+            </div>
+            
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

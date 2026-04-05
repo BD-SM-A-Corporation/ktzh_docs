@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как развернуть проект – Локомотивы (КТЖ)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col h-full overflow-y-auto">
+        <div class="p-6 border-b border-gray-200 bg-gray-900 text-white">
+            <h1 class="text-xl font-bold">Система Локомотивов</h1>
+            <p class="text-sm text-gray-300 mt-1">Документация v1.0 (КТЖ)</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 text-sm font-medium">
+            <div class="pt-2 pb-2">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Руководства (Docs)</p>
+                <a href="setup.html" class="block px-2 py-1.5 bg-blue-50 text-blue-700 rounded-md transition-colors">Как развернуть проект</a>
+                <a href="architecture.html" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">Как всё устроено</a>
+            </div>
+            <div class="pt-2 pb-2 border-t border-gray-200 mt-2">
+                <a href="index.html" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">&larr; Вернуться к API</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto w-full h-full p-8 md:p-12 bg-white" style="scrollbar-gutter: stable">
+        <div class="max-w-4xl mx-auto">
+            
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Как развернуть проект (Getting Started)</h2>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                В этой инструкции подробно описано, как клонировать репозиторий, установить зависимости и запустить проект локально или на сервере. Проект использует стек <strong>Laravel (PHP), Inertia.js и Svelte</strong>.
+            </p>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Шаг 1. Клонирование и зависимости</h3>
+            <p class="text-sm text-gray-600 mb-2">Сначала скачайте код и установите пакеты (PHP и Node.js).</p>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-8 overflow-x-auto text-sm font-mono">
+git clone &lt;ваш-репозиторий&gt; locomotive-app
+cd locomotive-app
+
+# Установка PHP-зависимостей (composer)
+composer install
+
+# Установка JS-зависимостей (NPM)
+npm install</pre>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Шаг 2. Конфигурация окружения (.env)</h3>
+            <p class="text-sm text-gray-600 mb-2">Скопируйте пример конфига и установите ключ:</p>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-8 overflow-x-auto text-sm font-mono">
+cp .env.example .env
+php artisan key:generate</pre>
+            <p class="text-sm text-gray-600 mb-4">
+                Откройте файл <code>.env</code> и настройте конфигурацию БД. Например, для PostgreSQL:
+            </p>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-8 overflow-x-auto text-sm font-mono">
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=locomotive
+DB_USERNAME=postgres
+DB_PASSWORD=secret</pre>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Шаг 3. Запуск миграций и сидов</h3>
+            <p class="text-sm text-gray-600 mb-2">Создайте таблицы в базе данных и заполните их демо-данными (в т.ч. тестовыми локомотивами):</p>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-8 overflow-x-auto text-sm font-mono">
+php artisan migrate --seed</pre>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Шаг 4. Запуск серверов</h3>
+            <p class="text-sm text-gray-600 mb-2">Так как мы используем Vite + Svelte для интерфейса, нам понадобятся два процесса (в разных терминалах):</p>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto text-sm font-mono">
+# 1-й терминал (Backend)
+php artisan serve
+
+# 2-й терминал (Frontend сборщик)
+npm run dev</pre>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4 rounded-r-md">
+                <p class="text-sm text-green-800">
+                    <strong>Успех:</strong> Приложение будет доступно по адресу <code>http://127.0.0.1:8000</code>. Вы можете войти с учетными данными, сгенерированными сидами!
+                </p>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2 mt-8">Дополнительно: Запуск веб-сокетов (Reverb)</h3>
+            <p class="text-sm text-gray-600 mb-2">Если вы используете систему телеметрии в реальном времени, вам нужно поднять веб-сокет сервер:</p>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-8 overflow-x-auto text-sm font-mono">
+php artisan reverb:start
+php artisan queue:work</pre>
+
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
