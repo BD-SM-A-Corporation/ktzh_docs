@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locomotive Telemetry API Documentation</title>
+    <title>Документация: Платформа Телеметрии Локомотивов (КТЖ)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .endpoint-card {
@@ -33,6 +33,7 @@
         .method-put { background-color: #f59e0b; }
         .method-patch { background-color: #f59e0b; }
         .method-delete { background-color: #ef4444; }
+        .method-web { background-color: #8b5cf6; }
         .endpoint-path {
             font-family: monospace;
             font-size: 1.125rem;
@@ -67,147 +68,84 @@
 
 <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col h-full overflow-y-auto">
-        <div class="p-6 border-b border-gray-200">
-            <h1 class="text-xl font-bold text-gray-900">API Documentation</h1>
-            <p class="text-sm text-gray-500 mt-1">Locomotive Fleet Telemetry v1.0</p>
+    <aside class="w-72 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col h-full overflow-y-auto">
+        <div class="p-6 border-b border-gray-200 bg-gray-900 text-white">
+            <h1 class="text-xl font-bold">Система Локомотивов</h1>
+            <p class="text-sm text-gray-300 mt-1">Документация v1.0 (КТЖ)</p>
         </div>
-        <nav class="flex-1 p-4 space-y-1 text-sm">
-            <div class="pt-4 pb-2">
-                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Authentication</p>
-                <a href="#auth" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">Auth & Sanctum</a>
-            </div>
+        <nav class="flex-1 p-4 space-y-1 text-sm font-medium">
             <div class="pt-2 pb-2">
-                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">User</p>
-                <a href="#get-user" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/user</a>
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Введение</p>
+                <a href="#auth" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">Аутентификация</a>
             </div>
-            <div class="pt-2 pb-2">
-                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Locomotives</p>
-                <a href="#get-locomotives" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/locomotives</a>
-                <a href="#post-locomotives" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">POST /api/locomotives</a>
-                <a href="#get-locomotive-id" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/locomotives/{id}</a>
-                <a href="#put-locomotive-id" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">PUT /api/locomotives/{id}</a>
-                <a href="#delete-locomotive-id" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">DELETE /api/locomotives/{id}</a>
-                <a href="#get-locomotive-stats" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/locomotives/{id}/stats</a>
+            <div class="pt-2 pb-2 border-t border-gray-200 mt-2">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">REST API: Локомотивы</p>
+                <a href="#locomotives-crud" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">CRUD Операции</a>
+                <a href="#get-locomotive-stats" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/locomotives/{id}/stats</a>
             </div>
-            <div class="pt-2 pb-2">
-                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Map</p>
-                <a href="#get-map-positions" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/map/positions</a>
+            <div class="pt-2 pb-2 border-t border-gray-200 mt-2">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">REST API: Телеметрия & Карта</p>
+                <a href="#get-map-positions" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/map/positions</a>
+                <a href="#get-telemetry-analytics" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/telemetry/analytics</a>
+                <a href="#get-telemetry-analytics-all" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/telemetry/analytics/all</a>
+                <a href="#get-telemetry-anomalies" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/telemetry/anomalies</a>
             </div>
-            <div class="pt-2 pb-2">
-                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Telemetry Analytics</p>
-                <a href="#get-telemetry-analytics" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/telemetry/analytics</a>
-                <a href="#get-telemetry-analytics-all" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/telemetry/analytics/all</a>
-                <a href="#get-telemetry-anomalies" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">GET /api/telemetry/anomalies</a>
+            <div class="pt-2 pb-2 border-t border-gray-200 mt-2">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">REST API: Управление</p>
+                <a href="#endpoints-resource" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/endpoints</a>
+                <a href="#get-user" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">/api/user</a>
             </div>
-            <div class="pt-2 pb-2">
-                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Websocket Endpoints</p>
-                <a href="#endpoints-resource" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md">Endpoints REST API</a>
+            <div class="pt-2 pb-2 border-t border-gray-200 mt-2">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Веб-навигация (SPA / Inertia.js)</p>
+                <a href="#web-routes" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">Основные страницы (Dashboard)</a>
+                <a href="#app-settings" class="block px-2 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">Настройки и Профиль</a>
             </div>
         </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto w-full h-full p-8 bg-white" style="scrollbar-gutter: stable">
+    <main class="flex-1 overflow-y-auto w-full h-full p-8 md:p-12 bg-white" style="scrollbar-gutter: stable">
         <div class="max-w-4xl mx-auto">
             
+            <!-- Auth -->
             <div class="mb-12" id="auth">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Introduction & Authentication</h2>
-                <p class="text-gray-600 mb-4">
-                    Welcome to the API Documentation for the Locomotive Fleet Telemetry Dashboard. This API allows fetching real-time and historical locomotive data, including metrics, positions, warnings, and websocket routing details.
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Введение и Аутентификация</h2>
+                <p class="text-gray-600 mb-4 leading-relaxed">
+                    Добро пожаловать в полную документацию системы мониторинга локомотивов. Данное API позволяет как получать данные (телеметрию, координаты) в реальном времени, так и управлять инфраструктурой.
                 </p>
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-                    <p class="text-sm text-yellow-700">
-                        <strong>Authentication Required:</strong> All API endpoints are protected by Laravel Sanctum (`auth:sanctum`). You must include a valid Bearer token or use cookie-based session authentication for SPA requests.
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded-r-md">
+                    <p class="text-sm text-yellow-800">
+                        <strong>Авторизация обязательна:</strong> Все API эндпоинты защищены через <code>Laravel Sanctum</code> (auth:sanctum). При запросах необходимо передавать Bearer токен в заголовке авторизации, либо использовать сессии для SPA приложений: <code>Cookie: XSRF-TOKEN</code>.
                     </p>
                 </div>
+                
+                <h4 class="font-semibold text-gray-900 mb-2 mt-6">Стандартные маршруты авторизации (Fortify)</h4>
+                <ul class="list-disc pl-5 text-gray-600 text-sm space-y-1 bg-gray-50 p-4 rounded-lg">
+                    <li><span class="font-mono text-blue-600">POST /login</span> — Аутентификация (email, password).</li>
+                    <li><span class="font-mono text-blue-600">POST /logout</span> — Завершение сессии.</li>
+                    <li><span class="font-mono text-blue-600">POST /register</span> — Регистрация нового оператора/пользователя.</li>
+                    <li><span class="font-mono text-blue-600">POST /forgot-password</span> — Запрос на сброс пароля.</li>
+                </ul>
             </div>
 
+            <!-- API: Locomotives CRUD -->
             <hr class="my-10 border-gray-200" />
-            
-            <h3 class="text-2xl font-bold mb-6 text-gray-800">User Endpoints</h3>
-            
-            <div class="endpoint-card" id="get-user">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-blue-500 pl-3">API: Локомотивы</h3>
+
+            <div class="endpoint-card" id="locomotives-crud">
                 <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/user</span>
+                    <span class="method-badge" style="background-color: #6366f1;">CRUD</span>
+                    <span class="endpoint-path">/api/locomotives[/{id}]</span>
                 </div>
                 <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Returns the currently authenticated user details.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Responses</h4>
-                    <pre><code>200 OK
-{
-  "id": 1,
-  "name": "Operator",
-  "email": "operator@locomotive.example.com",
-  "created_at": "...",
-  "updated_at": "..."
-}</code></pre>
-                </div>
-            </div>
-
-            <hr class="my-10 border-gray-200" />
-
-            <h3 class="text-2xl font-bold mb-6 text-gray-800">Locomotives</h3>
-
-            <div class="endpoint-card" id="get-locomotives">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/locomotives</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Retrieves a list of all locomotives in the fleet.</p>
-                </div>
-            </div>
-
-            <div class="endpoint-card" id="post-locomotives">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/api/locomotives</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Creates a new locomotive record in the database.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Request Body</h4>
-                    <ul class="list-disc pl-5 mb-4 text-gray-600 text-sm">
-                        <li><code>id</code> (string, required): Unique identifier for the locomotive.</li>
-                        <li><code>model</code> (string, required): Model/Series. Max 255 chars.</li>
-                        <li><code>depot</code> (string, optional): Assigned depot. Max 255 chars.</li>
+                    <p class="text-gray-600 mb-4">Базовые операции для работы с реестром локомотивов автопарка.</p>
+                    <ul class="list-none mb-4 text-gray-700 text-sm space-y-3">
+                        <li class="flex items-center gap-2"><span class="method-badge method-get text-xs">GET</span> <code>/api/locomotives</code> — Список всех локомотивов в системе.</li>
+                        <li class="flex items-center gap-2"><span class="method-badge method-post text-xs">POST</span> <code>/api/locomotives</code> — Регистрация нового локомотива (Требуется: <code>id</code>, <code>model</code>, Опционально: <code>depot</code>).</li>
+                        <li class="flex items-center gap-2"><span class="method-badge method-get text-xs">GET</span> <code>/api/locomotives/{id}</code> — Получение полной информации об 1 локомотиве.</li>
+                        <li class="flex items-center gap-2"><span class="method-badge method-patch text-xs">PATCH</span> <code>/api/locomotives/{id}</code> — Обновление данных локомотива.</li>
+                        <li class="flex items-center gap-2"><span class="method-badge method-delete text-xs">DELETE</span> <code>/api/locomotives/{id}</code> — Удаление локомотива из базы данных (204 No Content).</li>
                     </ul>
-                </div>
-            </div>
-
-            <div class="endpoint-card" id="get-locomotive-id">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/locomotives/{id}</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Retrieves the details of a specific locomotive by its ID.</p>
-                </div>
-            </div>
-
-            <div class="endpoint-card" id="put-locomotive-id">
-                <div class="endpoint-header">
-                    <span class="method-badge method-put">PUT/PATCH</span>
-                    <span class="endpoint-path">/api/locomotives/{id}</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Updates an existing locomotive record.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Request Body</h4>
-                    <ul class="list-disc pl-5 mb-4 text-gray-600 text-sm">
-                        <li><code>model</code> (string, optional)</li>
-                        <li><code>depot</code> (string, optional)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="endpoint-card" id="delete-locomotive-id">
-                <div class="endpoint-header">
-                    <span class="method-badge method-delete">DELETE</span>
-                    <span class="endpoint-path">/api/locomotives/{id}</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Deletes a locomotive. Returns <code>204 No Content</code> on success.</p>
                 </div>
             </div>
 
@@ -217,14 +155,14 @@
                     <span class="endpoint-path">/api/locomotives/{id}/stats</span>
                 </div>
                 <div class="endpoint-body">
-                    <span class="tag">Telemetry</span>
-                    <p class="text-gray-600 mb-4">Fetches the top 500 most recent telemetry historical records for the specified locomotive, ordered chronologically descending.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Responses</h4>
+                    <span class="tag">Телеметрия</span>
+                    <p class="text-gray-600 mb-4">Возвращает до 500 последних исторических записей телеметрии для конкретного локомотива в обратном хронологическом порядке (от самых новых к старым).</p>
+                    <h4 class="font-semibold text-gray-900 mb-2">Пример ответа:</h4>
                     <pre><code>200 OK
 [
   {
-    "id": 105,
-    "locomotive_id": "LOC-001",
+    "id": 8021,
+    "locomotive_id": "VL80S-100",
     "timestamp": "2026-04-05T08:00:00Z",
     "speed": 85.2,
     "temperature": 90.5,
@@ -232,15 +170,14 @@
     "fuel_level": 75.0,
     "health_score": 98,
     "is_anomaly": false
-  },
-  ...
+  }
 ]</code></pre>
                 </div>
             </div>
 
+            <!-- API: Analytics & Map -->
             <hr class="my-10 border-gray-200" />
-
-            <h3 class="text-2xl font-bold mb-6 text-gray-800">Map & Positions</h3>
+            <h3 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-emerald-500 pl-3">API: Телеметрия и Аналитика</h3>
 
             <div class="endpoint-card" id="get-map-positions">
                 <div class="endpoint-header">
@@ -248,25 +185,20 @@
                     <span class="endpoint-path">/api/map/positions</span>
                 </div>
                 <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Returns real-time locations and basic statuses of all locomotives for map rendering.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Responses</h4>
-                    <pre><code>200 OK
-[
+                    <p class="text-gray-600 mb-4">Возвращает последние известные геопозиции и текущий статус по каждому локомотиву для отрисовки на интерактивной карте.</p>
+                    <h4 class="font-semibold text-gray-900 mb-2">Ответ:</h4>
+                    <pre><code>[
   {
-    "id": "LOC-001",
-    "series": "Series A",
+    "id": "VL80S-100",
+    "series": "VL80",
     "lat": 48.8566,
     "lng": 2.3522,
-    "speed": 105,
-    "status": "In Transit"
+    "speed": 65,
+    "status": "В пути"
   }
 ]</code></pre>
                 </div>
             </div>
-
-            <hr class="my-10 border-gray-200" />
-
-            <h3 class="text-2xl font-bold mb-6 text-gray-800">Telemetry Analytics</h3>
 
             <div class="endpoint-card" id="get-telemetry-analytics">
                 <div class="endpoint-header">
@@ -274,13 +206,13 @@
                     <span class="endpoint-path">/api/telemetry/analytics</span>
                 </div>
                 <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Fetches aggregated or raw telemetry data for a specific locomotive across a given time window.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Query Parameters</h4>
+                    <p class="text-gray-600 mb-4">Агрегация либо сырые показания телеметрии локомотива за определенный временной промежуток.</p>
+                    <h4 class="font-semibold text-gray-900 mb-2">Query Параметры:</h4>
                     <ul class="list-disc pl-5 mb-4 text-gray-600 text-sm">
-                        <li><code>locomotive_id</code> (string, required)</li>
-                        <li><code>start_date</code> (date, required)</li>
-                        <li><code>end_date</code> (date, required, after start_date)</li>
-                        <li><code>step</code> (integer, optional) - If provided, records are grouped directly via date_bin using the step size in seconds.</li>
+                        <li><code>locomotive_id</code> (string, обязательно) - ID локомотива.</li>
+                        <li><code>start_date</code> (date, обязательно) - Начало выборки.</li>
+                        <li><code>end_date</code> (date, обязательно) - Конец выборки (должно быть больше start_date).</li>
+                        <li><code>step</code> (integer, опционально) - Шаг агрегации (в секундах). Если передан, данные усредняются функцией date_bin базы данных.</li>
                     </ul>
                 </div>
             </div>
@@ -291,12 +223,9 @@
                     <span class="endpoint-path">/api/telemetry/analytics/all</span>
                 </div>
                 <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Calculates fleet-wide averages for speed, temperature, pressure, and fuel level across the provided time window.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Query Parameters</h4>
+                    <p class="text-gray-600 mb-4">То же самое, но вычисляет усредненную аналитику <strong>по всему парку</strong> локомотивов (полезно для графиков Fleet-Wide Analytics).</p>
                     <ul class="list-disc pl-5 mb-4 text-gray-600 text-sm">
-                        <li><code>start_date</code> (date, required)</li>
-                        <li><code>end_date</code> (date, required, after start_date)</li>
-                        <li><code>step</code> (integer, optional) - Data grouping interval in seconds. Defaults to 300 (5 minutes).</li>
+                        <li>Требует параметры <code>start_date</code> и <code>end_date</code>. По умолчанию <code>step</code> равен 300 (5 минут).</li>
                     </ul>
                 </div>
             </div>
@@ -307,35 +236,106 @@
                     <span class="endpoint-path">/api/telemetry/anomalies</span>
                 </div>
                 <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Retrieves the historical list of acknowledged and recent telemetry anomalies detected across the fleet.</p>
-                    <h4 class="font-semibold text-gray-900 mb-2">Query Parameters</h4>
+                    <p class="text-gray-600 mb-4">Журнал всех зафиксированных аномальных показателей (перегрев, критическое давление) в системе.</p>
                     <ul class="list-disc pl-5 mb-4 text-gray-600 text-sm">
-                        <li><code>limit</code> (integer, optional) - Max objects to return. Default 50.</li>
+                        <li><code>limit</code> (int, опционально) - Максимальное количество результатов. По умолчанию: 50. Упорядочено по времени (новые сначала).</li>
                     </ul>
                 </div>
             </div>
 
+            <!-- API: System Management -->
             <hr class="my-10 border-gray-200" />
-            
-            <h3 class="text-2xl font-bold mb-6 text-gray-800">Websocket Endpoints</h3>
+            <h3 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-purple-500 pl-3">API: Инфраструктура</h3>
 
             <div class="endpoint-card" id="endpoints-resource">
                 <div class="endpoint-header">
-                    <span class="method-badge" style="background-color: #6366f1;">REST</span>
-                    <span class="endpoint-path">/api/endpoints</span>
+                    <span class="method-badge" style="background-color: #6366f1;">CRUD</span>
+                    <span class="endpoint-path">/api/endpoints[/{id}]</span>
                 </div>
                 <div class="endpoint-body">
-                    <p class="text-gray-600 mb-4">Standard CRUD resource for managing Websocket Endpoints mapped for data ingestion, connection handlers or real-time broadcast receivers.</p>
-                    <ul class="list-disc pl-5 mb-4 text-gray-600 text-sm space-y-1">
-                        <li><strong>GET /api/endpoints</strong> - List all endpoints</li>
-                        <li><strong>POST /api/endpoints</strong> - Store new endpoint (parameters: <code>url</code>, <code>is_active</code>, <code>description</code>)</li>
-                        <li><strong>GET /api/endpoints/{id}</strong> - Read details of specific endpoint configuration</li>
-                        <li><strong>PUT/PATCH /api/endpoints/{id}</strong> - Update an existing endpoint</li>
-                        <li><strong>DELETE /api/endpoints/{id}</strong> - Delete endpoint</li>
-                    </ul>
+                    <p class="text-gray-600 mb-4">Управление конфигурацией WebSocket эндпоинтов и каналов приема потоковых данных (создание, удаление, редактирование).</p>
+                    <p class="text-sm bg-gray-50 p-3 rounded-md text-gray-600 border border-gray-100">
+                        Параметры при POST/PATCH: <code>url</code> (строка, URL, уникальный), <code>is_active</code> (булево), <code>description</code> (текст).
+                    </p>
                 </div>
             </div>
 
+            <div class="endpoint-card" id="get-user">
+                <div class="endpoint-header">
+                    <span class="method-badge method-get">GET</span>
+                    <span class="endpoint-path">/api/user</span>
+                </div>
+                <div class="endpoint-body">
+                    <p class="text-gray-600">Возвращает профиль текущего пользователя по авторизационному токену / сессии.</p>
+                </div>
+            </div>
+
+            <!-- Web Application Navigation -->
+            <hr class="my-10 border-gray-200" />
+            <h3 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-amber-500 pl-3">Веб: Эндпоинты интерфейса (SPA / Inertia.js)</h3>
+
+            <div class="mb-8" id="web-routes">
+                <p class="text-gray-600 mb-4">Данные маршуты отдают не JSON, а клиентский интерфейс Svelte через компонент инерции (Inertia.js). Для доступа пользователь должен быть залогинен (middleware 'auth').</p>
+                
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="method-badge method-web">WEB</span>
+                            <span class="font-mono text-lg text-gray-900">/dashboard</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Главный экран с картой. Перенаправляет сюда с <code>/</code>. Компонент: <strong>Dashboard.svelte</strong></p>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="method-badge method-web">WEB</span>
+                            <span class="font-mono text-lg text-gray-900">/analytics</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Сводная аналитика по автопарку. Компонент: <strong>Analytics.svelte</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8" id="app-settings">
+                <h4 class="text-xl font-bold mb-4 text-gray-800">Настройки аккаунта (Settings)</h4>
+                <div class="overflow-hidden border border-gray-200 rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Маршрут</th>
+                                <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Метод</th>
+                                <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Описание</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-gray-600">
+                            <tr>
+                                <td class="px-6 py-4 font-mono text-blue-600">/settings/profile</td>
+                                <td class="px-6 py-4 font-semibold uppercase">Get, Patch, Delete</td>
+                                <td class="px-6 py-4">Просмотр, редактирование и удаление профиля пользователя.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-mono text-blue-600">/settings/security</td>
+                                <td class="px-6 py-4 font-semibold uppercase">Get</td>
+                                <td class="px-6 py-4">Рендер страницы настроек безопасности (смена пароля).</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-mono text-blue-600">/settings/password</td>
+                                <td class="px-6 py-4 font-semibold uppercase">Put</td>
+                                <td class="px-6 py-4">Обновление пароля. Подключен throttle (предотвращение брутфорса).</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-mono text-blue-600">/settings/appearance</td>
+                                <td class="px-6 py-4 font-semibold uppercase">Get</td>
+                                <td class="px-6 py-4">Рендер страницы внешнего вида платформы.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="text-center text-gray-400 text-xs mt-16 pb-8">
+                Сгенерировано автоматически • Версия платформы 1.0
+            </div>
         </div>
     </main>
 </div>
